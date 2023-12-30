@@ -8,6 +8,7 @@ const App = () => {
             <Router path="/sign-in" element={<SigninForm/> } />
             {/* {private routes} */}
             <Route index element= {<Home/>} />
+            
         </Routes>
     </main>
   )
