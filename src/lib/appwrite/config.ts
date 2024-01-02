@@ -10,7 +10,7 @@ export const appwriteConfig = {
     saveId: import.meta.env.VITE_APPWRITE_SAVES,
     userCollectionId: import.meta.env.VITE_APPWRITE_USERS,
 }
-console.log("here is the id:     ",appwriteConfig.projectId)
+// console.log("here is the id:     ",appwriteConfig.projectId)
 export const client = new Client();
 
 client.setProject(appwriteConfig.projectId!);
