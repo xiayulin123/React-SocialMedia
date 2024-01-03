@@ -37,8 +37,8 @@ export async function saveUserToDB(user: {
     username?: string;
 }){
     try {
-        console.log(user.email," here is the mail")
-        console.log(user," here is the user")
+        // console.log(user.email," here is the mail")
+        // console.log(user," here is the user")
 
         const newUser = await databases.createDocument(
             appwriteConfig.databaseId,

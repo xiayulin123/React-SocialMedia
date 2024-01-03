@@ -147,7 +147,7 @@ const SignupForm = () => {
             </Button>
 
             <p className="text-small-regular text-light-2 text-center mt-2">
-              <Link to="/sign-in" className="text-primary-500 text-small-semibold ml-1 ">Already have an account?</Link>
+              <Link to="/sign-in" className="text-primary-500 text-small-semibold ml-1 ">Already have an account? Sign In here!</Link>
             </p>
           </form>
         </div>
