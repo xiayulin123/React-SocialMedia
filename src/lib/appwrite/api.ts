@@ -16,8 +16,8 @@ export async function createUserAccount(user: INewUser){
 
         const newUser = await saveUserToDB({
             accountId: newAccount.$id,
-            email: newAccount.name,
-            name: newAccount.email,
+            email: newAccount.email,
+            name: newAccount.name,
             imageUrl: avatarUrl,
             username: user.username,
         });
@@ -37,15 +37,18 @@ export async function saveUserToDB(user: {
     username?: string;
 }){
     try {
+        console.log(user.email," here is the mail")
+        console.log(user," here is the user")
+
         const newUser = await databases.createDocument(
             appwriteConfig.databaseId,
             appwriteConfig.userCollectionId,
             ID.unique(),
-            user,
+            user
         );
         return newUser;
     } catch (error) {
-        console.log(error)
+        console.log(error);
     }
 }
 
