@@ -58,6 +58,7 @@ export async function signInAccount(user: {
 }){
     try {
         const session = await account.createEmailSession(user.email, user.password);
+        console.log(session)
         return session;
 
 
@@ -70,12 +71,15 @@ export async function getCurrentUser(){
     try {
         const currentAccount = await account.get();
         if(!currentAccount) throw Error;
-
+        console.log(currentAccount, "here is current account")
+        console.log("information  ", appwriteConfig.databaseId,
+        appwriteConfig.userCollectionId,)
         const currentUser = await databases.listDocuments(
             appwriteConfig.databaseId,
             appwriteConfig.userCollectionId,
             [Query.equal('accountId', currentAccount.$id)]
         )
+        console.log("listed documents", currentUser)
         
         if(!currentUser) throw Error;
         return currentUser.documents[0];

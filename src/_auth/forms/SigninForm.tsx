@@ -13,7 +13,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Toaster } from "@/components/ui/toaster"
 import { Button } from "@/components/ui/button"
-import { SignUpValidation as SignInValidation } from "@/lib/validation"
+import { SignInValidation } from "@/lib/validation"
 import { Loader } from "lucide-react"
 import { Link, useNavigate } from "react-router-dom"
 import { useToast } from "@/components/ui/use-toast"
@@ -23,7 +23,7 @@ import { useUserContext } from "@/context/authContext"
 
 const SigninForm = () => {
   const { toast } = useToast();
-  const {mutateAsync: signInAccount, isPending} = useSignInAccount();
+  const {mutateAsync: signInAccount} = useSignInAccount();
   const {checkAuthUser, isLoading: isUserLoading} = useUserContext()
   const navigate = useNavigate();
 
@@ -49,7 +49,7 @@ const SigninForm = () => {
       });
     }
     const isLoggedIn = await checkAuthUser();
-
+    console.log("is loggeded in ??", isLoggedIn)
     if(isLoggedIn){
       form.reset();
       navigate('/')
@@ -111,7 +111,7 @@ const SigninForm = () => {
             </Button>
 
             <p className="text-small-regular text-light-2 text-center mt-2">
-              <Link to="/sign-up" className="text-primary-500 text-small-semibold ml-1 ">Don't have an account? Sign up here!</Link>
+            Don't have an account? <Link to="/sign-up" className="text-primary-500 text-small-semibold ml-1 ">Sign up here!</Link>
             </p>
           </form>
         </div>

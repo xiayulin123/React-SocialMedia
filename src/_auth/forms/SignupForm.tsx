@@ -56,7 +56,7 @@ const SignupForm = () => {
 
     if(!session){
       return toast({
-        title: "Sign In failed, please try again",
+        title: "Sign Up failed, please try again",
       });
     }
     const isLoggedIn = await checkAuthUser();
@@ -147,7 +147,7 @@ const SignupForm = () => {
             </Button>
 
             <p className="text-small-regular text-light-2 text-center mt-2">
-              <Link to="/sign-in" className="text-primary-500 text-small-semibold ml-1 ">Already have an account? Sign In here!</Link>
+            Already have an account? <Link to="/sign-in" className="text-primary-500 text-small-semibold ml-1 ">Sign In here!</Link>
             </p>
           </form>
         </div>
