@@ -15,7 +15,7 @@ import { Textarea } from "../ui/textarea"
 import FileUploader from "../shared/FileUploader"
 import { PostValidation } from "@/lib/validation"
 import { Models } from "appwrite"
-import { useCreatePost } from "@/lib/react-query/queriesAndMutations"
+import { useCreatePost, useUpdatePost } from "@/lib/react-query/queriesAndMutations"
 import { useUserContext } from "@/context/authContext"
 import { toast } from "../ui/use-toast"
 import { useNavigate } from "react-router-dom"
@@ -27,6 +27,8 @@ type PostFormProps ={
 
 const PostForm = ({ post, action }: PostFormProps) => {
     const {mutateAsync: createPost , isPending: isLoadingCreate} = useCreatePost() 
+    const {mutateAsync: updatePost , isPending: isLoadingUpdate} = useUpdatePost() 
+
     const {user} = useUserContext();
     const navigate = useNavigate()
 
@@ -43,6 +45,20 @@ const PostForm = ({ post, action }: PostFormProps) => {
  
   // 2. Define a submit handler.
 async function onSubmit(values: z.infer<typeof PostValidation>) {
+  if(post && action === 'Update'){
+    const updatedPost = await updatePost({
+      ...values,
+      postId: post.$id,
+      imageId: post?.imageId,
+      imageUrl: post?.imageURL
+    })
+    if(!updatedPost){
+      toast({
+        title:"please try again"
+      })
+    }
+    return navigate(`/posts/${post.$id}`)
+  }
     const newPost = await createPost({
         ...values,
         userId: user.id,
