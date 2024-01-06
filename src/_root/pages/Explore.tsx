@@ -1,11 +1,17 @@
+import GridPostList from '@/components/shared/GridPostList'
+import SearchResults from '@/components/shared/SearchResults'
 import { Input } from '@/components/ui/input'
+import { useSearchPosts } from '@/lib/react-query/queriesAndMutations'
 import React, { useState } from 'react'
 
 const Explore = () => {
   const [searchValue, setSearchValue] = useState('')
-  const posts = []
-  const shouldShowSearchResults = searchValue !== '';
-  const shouldShowPost = !shouldShowSearchResults && posts.pages.every((item)=> item.documents.length === 0)
+  const {data: searchedPost, isPending: isSearchPending} = useSearchPosts(searchValue)
+  // const posts = []
+  // const shouldShowSearchResults = searchValue !== '';
+  // const shouldShowPost = !shouldShowSearchResults && posts.pages.every((item)=> item.documents.length === 0)
+
+
   return (
     <div className='explore-container'>
       <div className='explore-inner_container'>
@@ -36,7 +42,7 @@ const Explore = () => {
         ) : shouldShowPost ? (
           <p className='text-light-4 mt-10 text-center w-full'>End of Posts</p>
         ) : posts.pages.map((item, index)=>(
-          
+          <GridPostList key = {`page-${index}`} posts={item.documents}/>
         ))}
       </div>
 
