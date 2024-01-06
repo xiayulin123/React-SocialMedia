@@ -3,7 +3,9 @@ import React, { useState } from 'react'
 
 const Explore = () => {
   const [searchValue, setSearchValue] = useState('')
-
+  const posts = []
+  const shouldShowSearchResults = searchValue !== '';
+  const shouldShowPost = !shouldShowSearchResults && posts.pages.every((item)=> item.documents.length === 0)
   return (
     <div className='explore-container'>
       <div className='explore-inner_container'>
@@ -27,9 +29,15 @@ const Explore = () => {
           <img src="/assets/icons/filter.svg" width={20} height={20} alt='filter' />
         </div>
       </div>
-      
-      <div className='flex flex-wrap gap-9 w-full max-w-5xl'>
 
+      <div className='flex flex-wrap gap-9 w-full max-w-5xl'>
+        {shouldShowSearchResults ? (
+          <SearchResults />
+        ) : shouldShowPost ? (
+          <p className='text-light-4 mt-10 text-center w-full'>End of Posts</p>
+        ) : posts.pages.map((item, index)=>(
+          
+        ))}
       </div>
 
     </div>
