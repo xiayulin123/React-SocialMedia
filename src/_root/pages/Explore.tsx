@@ -1,15 +1,29 @@
 import GridPostList from '@/components/shared/GridPostList'
 import SearchResults from '@/components/shared/SearchResults'
+import Loader from '@/components/shared/loader'
 import { Input } from '@/components/ui/input'
-import { useSearchPosts } from '@/lib/react-query/queriesAndMutations'
-import React, { useState } from 'react'
+import useDebounce from '@/hooks/useDebounce'
+import { useGetPosts, useSearchPosts } from '@/lib/react-query/queriesAndMutations'
+import { useEffect, useState } from 'react'
+import { useInView } from 'react-intersection-observer'
 
 const Explore = () => {
+  const {data: posts, fetchNextPage, hasNextPage} = useGetPosts()
+  const {ref, inView} = useInView()
+
   const [searchValue, setSearchValue] = useState('')
-  const {data: searchedPost, isPending: isSearchPending} = useSearchPosts(searchValue)
-  // const posts = []
-  // const shouldShowSearchResults = searchValue !== '';
-  // const shouldShowPost = !shouldShowSearchResults && posts.pages.every((item)=> item.documents.length === 0)
+  const debouncedValue = useDebounce(searchValue, 500)
+  const {data: searchedPosts, isPending: isSearchPending} = useSearchPosts(debouncedValue)
+  useEffect(()=>{
+    if(inView && !searchValue) fetchNextPage();
+  },[inView, searchValue])
+  if(!posts){
+    return (<div className='flex-center w-full h-full'>
+      <Loader />
+    </div>)
+  }
+  const shouldShowSearchResults = searchValue !== '';
+  const shouldShowPosts = !shouldShowSearchResults && posts.pages.every((item)=> item?.documents.length === 0)
 
 
   return (
@@ -36,16 +50,26 @@ const Explore = () => {
         </div>
       </div>
 
-      <div className='flex flex-wrap gap-9 w-full max-w-5xl'>
+      <div className="flex flex-wrap gap-9 w-full max-w-5xl">
         {shouldShowSearchResults ? (
-          <SearchResults />
-        ) : shouldShowPost ? (
-          <p className='text-light-4 mt-10 text-center w-full'>End of Posts</p>
-        ) : posts.pages.map((item, index)=>(
-          <GridPostList key = {`page-${index}`} posts={item.documents}/>
-        ))}
+          <SearchResults
+            isSearchPending={isSearchPending}
+            searchedPosts={searchedPosts}
+          />
+        ) : shouldShowPosts ? (
+          <p className="text-light-4 mt-10 text-center w-full">End of posts</p>
+        ) : (
+          posts.pages.map((item, index) => (
+            <GridPostList key={`page-${index}`} posts={item.documents} />
+          ))
+        )}
       </div>
 
+            {hasNextPage && !searchValue && (
+              <div ref={ref} className='mt-10'>
+                <Loader />
+                 </div>
+            )}
     </div>
   )
 }

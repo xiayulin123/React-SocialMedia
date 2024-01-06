@@ -4,14 +4,12 @@ import { useForm } from 'react-hook-form'
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { Toaster } from "@/components/ui/toaster"
 import { Button } from "@/components/ui/button"
 import { SignUpValidation } from "@/lib/validation"
 import { Loader } from "lucide-react"
@@ -23,9 +21,9 @@ import { useUserContext } from "@/context/authContext"
 
 const SignupForm = () => {
   const { toast } = useToast();
-  const {mutateAsync: signInAccount, isPending: isSigningIn} = useSignInAccount();
+  const {mutateAsync: signInAccount} = useSignInAccount();
   const {mutateAsync : createUserAccount, isPending: isCreatingUser} = useCreateUserAccount();
-  const {checkAuthUser, isLoading: isUserLoading} = useUserContext()
+  const {checkAuthUser} = useUserContext()
   const navigate = useNavigate();
 
   const form = useForm<z.infer<typeof SignUpValidation>>({
@@ -39,7 +37,6 @@ const SignupForm = () => {
   })
 
   async function onSubmit(values: z.infer<typeof SignUpValidation>) {
-    console.log(values);
 
     const newUser = await createUserAccount(values);
     if(!newUser){

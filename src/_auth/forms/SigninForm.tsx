@@ -4,14 +4,12 @@ import { useForm } from 'react-hook-form'
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { Toaster } from "@/components/ui/toaster"
 import { Button } from "@/components/ui/button"
 import { SignInValidation } from "@/lib/validation"
 import { Loader } from "lucide-react"
@@ -36,7 +34,6 @@ const SigninForm = () => {
   })
 
   async function onSubmit(values: z.infer<typeof SignInValidation>) {
-    // console.log(values);
     
     const session = await signInAccount({
       email: values.email,
@@ -49,7 +46,6 @@ const SigninForm = () => {
       });
     }
     const isLoggedIn = await checkAuthUser();
-    console.log("is loggeded in ??", isLoggedIn)
     if(isLoggedIn){
       form.reset();
       navigate('/')

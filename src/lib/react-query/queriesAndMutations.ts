@@ -76,7 +76,7 @@ export const useGetRecentPost = () => {
     const queryClient = useQueryClient()
     return useMutation({
         mutationFn: ({postId, userId} : {postId: string; userId: string}) => savePost(postId, userId),
-        onSuccess: (data)=>{
+        onSuccess: ()=>{
             queryClient.invalidateQueries({
                 queryKey: [QUERY_KEYS.GET_RECENT_POSTS]
             })
@@ -140,7 +140,7 @@ export const useGetRecentPost = () => {
     const queryClient = useQueryClient()
     return useMutation({
       mutationFn: ({postId,imageId}: {postId: string, imageId: string}) => deletePost(postId, imageId),
-      onSuccess: (data) => {
+      onSuccess: () => {
         queryClient.invalidateQueries({
           queryKey: [QUERY_KEYS.GET_RECENT_POSTS]
         })

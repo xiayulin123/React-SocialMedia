@@ -37,8 +37,7 @@ export async function saveUserToDB(user: {
   username?: string;
 }) {
   try {
-    // console.log(user.email," here is the mail")
-    // console.log(user," here is the user")
+    
 
     const newUser = await databases.createDocument(
       appwriteConfig.databaseId,
@@ -58,7 +57,6 @@ export async function signInAccount(user: {
 }) {
   try {
     const session = await account.createEmailSession(user.email, user.password);
-    console.log(session)
     return session;
 
 
@@ -71,15 +69,12 @@ export async function getCurrentUser() {
   try {
     const currentAccount = await account.get();
     if (!currentAccount) throw Error;
-    console.log(currentAccount, "here is current account")
-    console.log("information  ", appwriteConfig.databaseId,
       appwriteConfig.userCollectionId,)
     const currentUser = await databases.listDocuments(
       appwriteConfig.databaseId,
       appwriteConfig.userCollectionId,
       [Query.equal('accountId', currentAccount.$id)]
     )
-    console.log("listed documents", currentUser)
 
     if (!currentUser) throw Error;
     return currentUser.documents[0];
@@ -242,7 +237,6 @@ export function getFilePreview(fileId: string) {
 
 export async function deleteFile(fileId: string) {
   try {
-    console.log("delete the file")
     await storage.deleteFile(appwriteConfig.storageId, fileId);
 
     return { status: "ok" };
@@ -348,3 +342,24 @@ export async function getPostById(postId: string){
   }
 }
 
+export async function getInfinitePosts({ pageParam }: { pageParam: number }) {
+  const queries: any[] = [Query.orderDesc("$updatedAt"), Query.limit(9)];
+
+  if (pageParam) {
+    queries.push(Query.cursorAfter(pageParam.toString()));
+  }
+
+  try {
+    const posts = await databases.listDocuments(
+      appwriteConfig.databaseId,
+      appwriteConfig.postCollectionId,
+      queries
+    );
+
+    if (!posts) throw Error;
+
+    return posts;
+  } catch (error) {
+    console.log(error);
+  }
+}

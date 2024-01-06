@@ -11,7 +11,6 @@ export const appwriteConfig = {
     postCollectionId: import.meta.env.VITE_APPWRITE_COLLECTION,
     userCollectionId: import.meta.env.VITE_APPWRITE_USERS,
 }
-// console.log("here is the id:     ",appwriteConfig.projectId)
 export const client = new Client();
 
 client.setProject(appwriteConfig.projectId!);

@@ -5,7 +5,7 @@ import RootLayout from './_root/RootLayout';
 import { AllUsers, CreatePost, EditPost, Explore, Home, PostDetails, Profile, Saved, UpdateProfile } from './_root/pages';
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster"
-import {Routes, Route, Router} from 'react-router-dom'
+import {Routes, Route} from 'react-router-dom'
 const App = () => {
   return (
     <main className='flex h-screen '>
