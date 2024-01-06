@@ -21,10 +21,11 @@ import { toast } from "../ui/use-toast"
 import { useNavigate } from "react-router-dom"
 
 type PostFormProps ={
-    post?: Models.Document
+    post?: Models.Document;
+    action: "Create" | "Update"
 }
 
-const PostForm = ({ post }: PostFormProps) => {
+const PostForm = ({ post, action }: PostFormProps) => {
     const {mutateAsync: createPost , isPending: isLoadingCreate} = useCreatePost() 
     const {user} = useUserContext();
     const navigate = useNavigate()
@@ -56,7 +57,6 @@ async function onSubmit(values: z.infer<typeof PostValidation>) {
 
   }
 
-
   return (
     <Form {...form}>
     <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-9 w-full max-w-5xl">
@@ -81,7 +81,7 @@ async function onSubmit(values: z.infer<typeof PostValidation>) {
           <FormItem>
             <FormLabel className="shad-form_label">Add Photos</FormLabel>
             <FormControl>
-              <FileUploader fieldChange={field.onChange} mediaUrl={post?.imageUrl}/>
+              <FileUploader fieldChange={field.onChange} mediaUrl={post?.imageURL}/>
             </FormControl>
             <FormMessage className="shad-form_message"/>
           </FormItem>
