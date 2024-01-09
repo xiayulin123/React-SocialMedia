@@ -5,17 +5,18 @@ import PostStats from "./PostStats";
 
 
 type GridPostListProps = {
-  posts: Models.Document[];
+  searchedPosts: Models.Document[];
   showUser?: boolean;
   showStats?: boolean;
 };
 
 const GridPostList = ({
-  posts,
+  searchedPosts,
   showUser = true,
   showStats = true,
 }: GridPostListProps) => {
   const { user } = useUserContext();
+  // const posts= searchedPosts.documents;
   return (
     <ul className="grid-container">
       {posts.map((post) => (
